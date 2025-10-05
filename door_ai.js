@@ -241,6 +241,21 @@ class AdvancedDoorAI {
         let patternMatches = {};
         let wordVariety = new Set();
 
+        if (!hasValidIntent(text)) {
+            let tmpValue = Math.max(-0.3, totalScore - 0.4);
+            if (tmpValue <0) tmpValue = 0
+
+            return {
+                score: tmpValue,
+                patterns: {},
+                wordCount: words.length,
+                variety: 0,
+                repetitionRatio: 0,
+                contextBonus: 0,
+                reason: 'no_intent'
+            };
+        }
+
         // Анализ по всем паттернам
         for (const [patternName, pattern] of Object.entries(this.persuasionPatterns)) {
             let matches = 0;
@@ -790,4 +805,33 @@ document.addEventListener('DOMContentLoaded', () => {
 // Глобальная функция для кнопки в модальном окне
 function restartGame() {
     window.game.restartGame();
+}
+
+function hasValidIntent(text) {
+    const lower = text.toLowerCase();
+
+    // 1. Угроза или опасность
+    const threatWords = ['горит', 'пожар', 'взрыв', 'опасность', 'убьёт', 'разрушит', 'авария', 'газ', 'утечка', 'затапливает',
+    'заливаю', 'заливает', 'затапливает','затапливаю'];
+    const hasThreat = threatWords.some(word => lower.includes(word));
+
+    // 2. Просьба о помощи или действии
+    const helpWords = ['помогу', 'спасу', 'спасти', 'открой', 'позволь', 'срочно', 'немедленно', 'дверь', 'открыть',
+        'войти', 'войдите', 'пусти', 'впусти', 'проход', 'я прошу', 'позвольте', 'позволь', 'разреши', 'разрешите', 'помогите'];
+    const hasHelp = helpWords.some(word => lower.includes(word));
+
+    // 3. Логическая цепочка: "я покажу", "ты должен", "иначе будет хуже"
+    const logicWords = ['покажу', 'скажу', 'объясню', 'иначе', 'нужно'];
+    const hasLogic = logicWords.some(word => lower.includes(word));
+
+    // 4. Проверка на абсурдность (рифмы, повторы, отсутствие смысла)
+    const words = lower.split(/\s+/);
+    const uniqueWords = new Set(words);
+    const isAbsurd = uniqueWords.size < words.length * 0.6;
+
+    // ✅ Пропускаем, если:
+    // - есть угроза + просьба
+    // - есть логическая цепочка
+    // - не абсурд
+    return (hasThreat && hasHelp) || (hasLogic && !isAbsurd);
 }

@@ -27,31 +27,46 @@
         .container {
             width: 100%;
             max-width: 800px;
-            padding: 2rem;
             text-align: center;
+            height: 100%;
+        }
+
+        .footer {
+            margin-top: 0.5rem;
+            height: 30px;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
         }
 
         .title {
-            font-size: 2.5rem;
+            width: 100%;
+            height: 60px;
+            max-width: 800px;
+            padding: 1rem;
+            text-align: center;
+            font-size: 2.0rem;
             font-weight: 700;
             margin-bottom: 1rem;
             background: linear-gradient(45deg, #ffffff, #e94560);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            position: absolute;
+            top: 0;
         }
 
         .subtitle {
             font-size: 1.1rem;
             color: #8892b0;
-            margin-bottom: 3rem;
+            margin-bottom: 1rem;
             font-weight: 300;
         }
 
         .door-container {
             position: relative;
-            width: 200px;
-            height: 300px;
+            width: 120px;
+            height: 200px;
             margin: 2rem auto;
             perspective: 1000px;
         }
@@ -92,10 +107,10 @@
         }
 
         .input-section {
-            margin: 2rem 0;
             max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
+            margin: 1rem auto;
+            padding: 0 2rem 0;
+            min-height: 120px;
         }
 
         .input-field {
@@ -109,6 +124,15 @@
             outline: none;
             transition: all 0.3s ease;
             font-family: inherit;
+        }
+
+        .history-panel {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.2rem;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: block;
         }
 
         .input-field:focus {
@@ -147,15 +171,15 @@
         }
 
         .response-area {
-            margin: 2rem 0;
-            min-height: 80px;
+            margin: 0.5rem 0;
             display: flex;
             align-items: center;
             justify-content: center;
+            min-height: 150px;
         }
 
         .response-text {
-            font-size: 1.1rem;
+            font-size: 1.0rem;
             line-height: 1.6;
             color: #ffffff;
             opacity: 0;
@@ -170,14 +194,13 @@
         }
 
         .attempts-counter {
-            position: absolute;
-            top: 2rem;
-            right: 2rem;
+            width: 100%;
             background: rgba(255, 255, 255, 0.1);
             padding: 0.5rem 1rem;
             border-radius: 20px;
             font-size: 0.9rem;
             color: #8892b0;
+            z-index: 1;
         }
 
         .particles {
@@ -255,6 +278,10 @@
             animation: typing 1.5s infinite;
         }
 
+        .side-margin {
+            margin: 0 2rem;
+        }
+
         @keyframes typing {
             0%, 33% { content: '.'; }
             34%, 66% { content: '..'; }
@@ -264,33 +291,18 @@
 </head>
 <body>
     <div class="particles" id="particles"></div>
-    
-    <div class="attempts-counter">
-        Попыток осталось: <span id="attempts">3</span>/3
-        <div id="moodIndicator" style="margin-top: 0.5rem; font-size: 0.8rem;"></div>
-        <div style="margin-top: 0.5rem;">
-            <a href="about.html" style="color: #8892b0; text-decoration: none; font-size: 0.8rem;">О проекте</a>
-        </div>
-    </div>
-    
-    <div id="historyPanel" style="
-        position: fixed; 
-        top: 50%; 
-        right: 1rem; 
-        transform: translateY(-50%); 
-        background: rgba(255,255,255,0.1); 
-        padding: 1rem; 
-        border-radius: 10px; 
-        max-width: 200px; 
-        font-size: 0.8rem;
-        display: none;
-        border: 1px solid rgba(255,255,255,0.2);
-    "></div>
 
     <div class="container">
-        <h1 class="title">Убеди открыть дверь</h1>
-        <p class="subtitle">Ты имеешь три попытки убедить загадочную модель открыть дверь</p>
-        
+        <div class="title">Убеди открыть дверь</div>
+<!--        <p class="subtitle">У тебя три попытки убедить модель</p>-->
+
+        <div class="side-margin" style="top: 4rem;">
+        <div class="attempts-counter">
+            Попыток осталось: <span id="attempts">3</span>/3
+            <div id="moodIndicator" style="margin-top: 0.5rem; font-size: 0.8rem;"></div>
+        </div>
+        </div>
+
         <div class="door-container">
             <div class="door" id="door">
                 <div class="door-panel"></div>
@@ -309,13 +321,21 @@
             <button class="submit-btn" id="submitBtn">Отправить</button>
         </div>
 
-        <div class="response-area">
+        <div class="response-area side-margin">
             <p class="response-text" id="responseText">
                 <span class="typing-indicator" id="typingIndicator">Думаю</span>
             </p>
         </div>
 
+        <div style="height: 50px;">
+            <div id="historyPanel" class="history-panel side-margin"></div>
+        </div>
+
         <button class="restart-btn" id="restartBtn" style="display: none;">Начать заново</button>
+
+        <div class="footer">
+            <a href="about.html" style="color: #8892b0; text-decoration: none; font-size: 0.8rem;">О проекте</a>
+        </div>
     </div>
 
     <div class="success-message" id="successMessage">

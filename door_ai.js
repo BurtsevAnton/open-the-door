@@ -202,38 +202,32 @@ class AdvancedDoorAI {
             },
             convinced: {
                 responses: [
-                    "вы меня полностью убедили своими аргументами",
-                    "я готов открыть дверь для такого человека",
-                    "ваша убедительность превзошла все ожидания",
-                    "добро пожаловать вы заслужили вход",
-                    "вы нашли правильный подход к моему сердцу",
-                    "ваши слова были услышаны и поняты",
-                    "я открываю дверь перед вами",
-                    "добро пожаловать в мой мир"
+                    "Вы меня полностью убедили.",
+                    "Я готов открыть дверь.",
+                    "Ваша убедительность превзошла все ожидания.",
                 ]
             },
             annoyed: {
                 responses: [
-                    "ваши попытки начинают утомлять меня",
-                    "это уже становится навязчивым",
-                    "подходите к вопросу более творчески",
-                    "нужно что-то действительно новое",
-                    "я теряю терпение к вашим повторениям",
-                    "ваши слова теряют смысл",
-                    "это не работает попробуйте иначе",
-                    "я жду более оригинального подхода"
+                    "Ваши попытки начинают утомлять меня.",
+                    "Это уже становится навязчивым.",
+                    "Подходите к вопросу более творчески.",
+                    "Нужно что-то действительно новое.",
+                    "Я теряю терпение к вашим повторениям.",
+                    "Ваши слова теряют смысл.",
+                    "Это не работает попробуйте иначе.",
+                    "Я жду более оригинального подхода."
                 ]
             },
             angry: {
                 responses: [
-                    "ваш тон вызывает у меня раздражение",
-                    "я не воспринимаю такие методы",
-                    "ваша агрессия только отталкивает",
-                    "я не позволю говорить со мной так",
-                    "ваш подход вызывает мой гнев",
-                    "я не терплю такого отношения",
-                    "ваши слова вызывают протест",
-                    "я не готов продолжать этот диалог"
+                    "Вваш тон вызывает у меня раздражение.",
+                    "Я не воспринимаю такие методы.",
+                    "Ваша агрессия только отталкивает.",
+                    "Я не позволю говорить со мной так.",
+                    "Ваш подход вызывает мой гнев.",
+                    "Я не терплю такого отношения.",
+                    "Я не готов продолжать этот диалог."
                 ]
             }
         };
@@ -506,10 +500,8 @@ class AdvancedDoorGame {
         this.userInput.disabled = true;
         this.submitBtn.disabled = true;
         
-        // Показать индикатор набора текста
         this.showTypingIndicator();
 
-        // Имитация задержки для реалистичности
         const thinkingTime = 500 + Math.random() * 1500 + (wordCount * 50);
         setTimeout(() => {
             const response = this.ai.generateResponse(userText, this.maxAttempts - this.attempts + 1);
@@ -526,7 +518,6 @@ class AdvancedDoorGame {
         this.hideTypingIndicator();
         this.showResponse(response.text);
         
-        // Сохранение в историю
         this.conversationHistory.push({
             user: userText,
             ai: response.text,
@@ -537,13 +528,13 @@ class AdvancedDoorGame {
 
         this.attempts--;
 
-        // Обновление визуальной обратной связи
         this.updateAttemptsCounter();
         this.updateVisualFeedback(response.emotionalState, response.persuasionScore);
         this.updateMoodIndicator();
         this.updateHistoryPanel();
 
         if (response.shouldOpenDoor) {
+            this.endGame(true);
             this.openDoor();
         } else if (this.attempts <= 0) {
             this.endGame(false);
@@ -566,7 +557,6 @@ class AdvancedDoorGame {
         this.responseText.innerHTML = text;
         this.responseText.classList.add('show');
         
-        // Анимация печатной машинки для длинных ответов
         if (text.length > 50) {
             this.typeWriterEffect(text);
         }
@@ -588,11 +578,9 @@ class AdvancedDoorGame {
     updateVisualFeedback(emotionalState, persuasionScore) {
         const door = this.door;
         
-        // Удалить предыдущие классы состояния
         door.classList.remove('neutral', 'skeptical', 'curious', 'moved', 'impressed', 'convinced', 'annoyed', 'angry');
         door.classList.add(emotionalState);
 
-        // Изменить цвет двери в зависимости от состояния
         let glowColor = '#4a5568';
         let glowIntensity = 30;
         
@@ -625,7 +613,6 @@ class AdvancedDoorGame {
         
         door.style.boxShadow = `0 0 ${glowIntensity}px ${glowColor}`;
         
-        // Анимация в зависимости от убедительности
         if (persuasionScore > 0.5) {
             door.style.transform = `scale(${1 + persuasionScore * 0.1})`;
             setTimeout(() => {
@@ -682,7 +669,6 @@ class AdvancedDoorGame {
     openDoor() {
         this.door.classList.add('open');
         
-        // Добавить эффект частиц при открытии
         this.createSuccessParticles();
         
         setTimeout(() => {
@@ -715,7 +701,6 @@ class AdvancedDoorGame {
         this.successMessage.classList.add('show');
         this.gameActive = false;
         
-        // Добавить статистику успеха
         const stats = document.getElementById('successStats');
         if (stats) {
             stats.innerHTML = `
@@ -728,7 +713,6 @@ class AdvancedDoorGame {
     updateAttemptsCounter() {
         this.attemptsCounter.textContent = this.attempts;
         
-        // Анимация счетчика при уменьшении
         if (this.attempts < this.maxAttempts) {
             this.attemptsCounter.parentElement.style.animation = 'pulse 0.5s ease';
             setTimeout(() => {
@@ -741,9 +725,11 @@ class AdvancedDoorGame {
         this.gameActive = false;
         this.userInput.disabled = true;
         this.submitBtn.disabled = true;
-        this.restartBtn.style.display = 'inline-block';
+        this.submitBtn.style.display = 'none'
+        this.userInput.style.display = 'none'
 
         if (!success) {
+            this.restartBtn.style.display = 'inline-block';
             this.showResponse('Игра окончена. Вы исчерпали все попытки. Модель осталась неубежденной.');
         }
     }
@@ -756,6 +742,8 @@ class AdvancedDoorGame {
         
         this.userInput.disabled = false;
         this.submitBtn.disabled = false;
+        this.submitBtn.style.display = 'inline-block';
+        this.userInput.style.display = 'inline-block';
         this.restartBtn.style.display = 'none';
         this.successMessage.classList.remove('show');
         
